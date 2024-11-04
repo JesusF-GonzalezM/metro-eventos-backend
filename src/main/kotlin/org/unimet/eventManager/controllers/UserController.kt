@@ -1,4 +1,5 @@
 package org.unimet.eventManager.controllers
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
 import org.unimet.eventManager.models.User
 import org.unimet.eventManager.dto.UserDTO
@@ -6,10 +7,14 @@ import org.unimet.eventManager.repositories.UserRepository
 
 @RestController
 @RequestMapping("/users")
-class UserController(val userRepository: UserRepository) {
+class UserController(
+    val userRepository: UserRepository,
+    val passwordEncoder: PasswordEncoder
+) {
     @PostMapping()
-    fun createUser() {
-        val user = User(id = "1", email="jesus@gmail.com", password="password")
+    fun createUser(
+        @RequestBody userDTO: UserDTO) {
+        val user = User(email=userDTO.email, password=passwordEncoder.encode(userDTO.password))
         userRepository.save(user)
     }
     @PutMapping("/{mail}")
