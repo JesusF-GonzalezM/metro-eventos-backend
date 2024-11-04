@@ -9,4 +9,6 @@ interface UserRepository : MongoRepository<User, String> {
     fun findUserByEmail(email: String): User
     @Query("{email: '?0'}", delete = true)
     fun deleteByEmail(mail: String): User
+
+
 }

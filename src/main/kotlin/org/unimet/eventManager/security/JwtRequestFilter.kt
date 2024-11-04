@@ -29,22 +29,34 @@ class JwtRequestFilter(
         var username: String? = null
         var jwt: String? = null
 
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            jwt = authorizationHeader.substring(7)
-            username = jwtUtil.extractUsername(jwt)
+        if (authorizationHeader.isNullOrEmpty() || !authorizationHeader.startsWith("Bearer ")) {
+            chain.doFilter(request, response)
+            return
         }
 
-        if (username != null && SecurityContextHolder.getContext().authentication == null) {
-            val userDetails: UserDetails = customUserDetailsService.loadUserByUsername(username)
+        try{
+            val jwt = authorizationHeader.substring(7)
+            val username = jwtUtil.extractUsername(jwt)
 
-            if (jwtUtil.validateToken(jwt!!, userDetails)) {
-                val usernamePasswordAuthenticationToken = UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.authorities
-                )
-                usernamePasswordAuthenticationToken.details = WebAuthenticationDetailsSource().buildDetails(request)
-                SecurityContextHolder.getContext().authentication = usernamePasswordAuthenticationToken
+            val authentication = SecurityContextHolder.getContext().authentication
+
+            if (authentication == null) {
+                val userDetails: UserDetails = customUserDetailsService.loadUserByUsername(username)
+
+                if (jwtUtil.validateToken(jwt, userDetails)) {
+                    val usernamePasswordAuthenticationToken = UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.authorities
+                    )
+                    usernamePasswordAuthenticationToken.details = WebAuthenticationDetailsSource().buildDetails(request)
+                    SecurityContextHolder.getContext().authentication = usernamePasswordAuthenticationToken
+                }
             }
+            chain.doFilter(request, response)
+        } catch (exception: Exception) {
+            handlerExceptionResolver.resolveException(request, response, null, exception);
         }
-        chain.doFilter(request, response)
+
+
+
     }
 }

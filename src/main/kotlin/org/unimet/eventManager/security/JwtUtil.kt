@@ -36,7 +36,7 @@ class JwtUtil {
     }
 
     fun generateToken(userDetails: UserDetails): String {
-        val claims: Map<String, Any> = mapOf()
+        val claims: Map<String, Any> = mutableMapOf()
         return createToken(claims, userDetails.username)
     }
 
