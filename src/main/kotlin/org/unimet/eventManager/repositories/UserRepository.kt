@@ -10,5 +10,6 @@ interface UserRepository : MongoRepository<User, String> {
     @Query("{email: '?0'}", delete = true)
     fun deleteByEmail(mail: String): User
 
-
+    @Query("{email: '?0'}")
+    fun existByEmail(email: String): Boolean
 }

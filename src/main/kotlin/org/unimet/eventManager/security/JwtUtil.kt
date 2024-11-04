@@ -5,14 +5,13 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
-import java.util.Date
-import java.util.HashMap
+import java.util.*
 import java.util.function.Function
 
 @Service
 class JwtUtil {
 
-    private val SECRET_KEY = "secret"
+    private val SECRET_KEY = "3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b"
 
     fun extractUsername(token: String): String {
         return extractClaim(token, Claims::getSubject)

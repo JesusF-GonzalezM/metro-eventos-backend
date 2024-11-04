@@ -10,12 +10,14 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
+import org.springframework.web.servlet.HandlerExceptionResolver
 import java.io.IOException
 
 @Component
 class JwtRequestFilter(
     private val jwtUtil: JwtUtil,
-    private val customUserDetailsService: CustomDetailsService
+    private val customUserDetailsService: CustomDetailsService,
+    private val handlerExceptionResolver: HandlerExceptionResolver
 ) : OncePerRequestFilter() {
 
     @Throws(ServletException::class, IOException::class)
@@ -25,9 +27,6 @@ class JwtRequestFilter(
         chain: FilterChain
     ) {
         val authorizationHeader = request.getHeader("Authorization")
-
-        var username: String? = null
-        var jwt: String? = null
 
         if (authorizationHeader.isNullOrEmpty() || !authorizationHeader.startsWith("Bearer ")) {
             chain.doFilter(request, response)
@@ -53,7 +52,7 @@ class JwtRequestFilter(
             }
             chain.doFilter(request, response)
         } catch (exception: Exception) {
-            handlerExceptionResolver.resolveException(request, response, null, exception);
+            handlerExceptionResolver.resolveException(request, response, null, exception)
         }
 
 
