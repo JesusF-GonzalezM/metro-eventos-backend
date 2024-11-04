@@ -25,6 +25,7 @@ class UserController(val userRepository: UserRepository) {
     @DeleteMapping("/{mail}")
     fun deleteUser(@PathVariable mail: String) {
         userRepository.deleteByEmail(mail)
+        //TODO: Investigar si es mejor un PutMapping con el punto de borrado.
     }
 
     @GetMapping("/{mail}")
