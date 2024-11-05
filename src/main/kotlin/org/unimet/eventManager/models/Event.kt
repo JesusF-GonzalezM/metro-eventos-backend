@@ -9,6 +9,7 @@ data class Event(
     @MongoId(targetType = FieldType.STRING)
     var id: String? = null,
     val title: String,
+    val path: String,
     val date: String,
     val place: String,
     val author: String,

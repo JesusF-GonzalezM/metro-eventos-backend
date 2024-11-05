@@ -19,7 +19,7 @@ class EventController (
     fun createEvent(
         @RequestBody eventDTO: EventDTO,
     ): Event {
-        val event = Event(id=eventDTO.id, title=eventDTO.title, date=eventDTO.date, author=eventDTO.author, description=eventDTO.description,
+        val event = Event(id=eventDTO.id, path=eventDTO.path, title=eventDTO.title, date=eventDTO.date, author=eventDTO.author, description=eventDTO.description,
             entryType=eventDTO.entryType, location=eventDTO.location, place=eventDTO.place, linkCompra=eventDTO.linkCompra)
 
         return eventRepository.save(event)

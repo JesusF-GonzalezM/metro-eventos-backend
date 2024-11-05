@@ -1,7 +1,9 @@
 package org.unimet.eventManager.controllers
 
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -26,19 +28,22 @@ class AuthController (
 ){
 
     @PostMapping("/login")
-    fun loginUser(@RequestBody authenticationRequest: AuthenticationRequest): ResponseEntity<JwtResponse> {
-        authenticationManager.authenticate(
-            UsernamePasswordAuthenticationToken(
-                authenticationRequest.email,
-                authenticationRequest.password
+    fun loginUser(@RequestBody authenticationRequest: AuthenticationRequest): ResponseEntity<Any> {
+        return try {
+            authenticationManager.authenticate(
+                UsernamePasswordAuthenticationToken(
+                    authenticationRequest.email,
+                    authenticationRequest.password
+                )
             )
-        )
-        val userDetails: UserDetails = userDetailsService.loadUserByUsername(authenticationRequest.email)
-        val token = jwtUtil.generateToken(userDetails)
-        val response = JwtResponse(token)
-        return ResponseEntity.ok(response)
+            val userDetails: UserDetails = userDetailsService.loadUserByUsername(authenticationRequest.email)
+            val token = jwtUtil.generateToken(userDetails)
+            val response = JwtResponse(token)
+            ResponseEntity.ok(response)
+        } catch (ex: BadCredentialsException) {
+            ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect email or password")
+        }
     }
-
    @PostMapping("/signup")
     fun createUser(
         @RequestBody userDTO: UserDTO) {
