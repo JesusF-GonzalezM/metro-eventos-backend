@@ -27,6 +27,7 @@ class AuthController (
     private val jwtUtil: JwtUtil
 ){
 
+    @CrossOrigin(origins = ["*"])
     @PostMapping("/login")
     fun loginUser(@RequestBody authenticationRequest: AuthenticationRequest): ResponseEntity<Any> {
         return try {
@@ -44,6 +45,8 @@ class AuthController (
             ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect email or password")
         }
     }
+
+    @CrossOrigin(origins = ["*"])
    @PostMapping("/signup")
     fun createUser(
         @RequestBody userDTO: UserDTO) {
@@ -52,7 +55,7 @@ class AuthController (
             throw RuntimeException("User already exists")
         }
 
-        val user = User(email=userDTO.email, password=passwordEncoder.encode(userDTO.password), name=userDTO.name, lastName=userDTO.lastName)
+        val user = User(email=userDTO.email, password=passwordEncoder.encode(userDTO.password), name=userDTO.name, lastName=userDTO.lastName, role=userDTO.role)
         userRepository.save(user)
     }
 }

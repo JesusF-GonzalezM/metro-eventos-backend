@@ -15,16 +15,18 @@ class EventController (
     val eventService: EventService
 ) {
 
+    @CrossOrigin(origins = ["*"])
     @PostMapping
     fun createEvent(
         @RequestBody eventDTO: EventDTO,
     ): Event {
         val event = Event(id=eventDTO.id, path=eventDTO.path, title=eventDTO.title, date=eventDTO.date, author=eventDTO.author, description=eventDTO.description,
-            entryType=eventDTO.entryType, location=eventDTO.location, place=eventDTO.place, linkCompra=eventDTO.linkCompra)
+            entryType=eventDTO.entryType, place=eventDTO.place, linkCompra=eventDTO.linkCompra)
 
         return eventRepository.save(event)
     }
 
+    @CrossOrigin(origins = ["*"])
     @GetMapping()
     fun getEvents(
         @RequestParam(defaultValue = "0") page: Int,
