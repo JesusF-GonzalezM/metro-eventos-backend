@@ -18,13 +18,14 @@ class EventController (
     @PostMapping
     fun createEvent(
         @RequestBody eventDTO: EventDTO,
-    ) {
+    ): Event {
         val event = Event(id=eventDTO.id, title=eventDTO.title, date=eventDTO.date, author=eventDTO.author, description=eventDTO.description,
             entryType=eventDTO.entryType, location=eventDTO.location, place=eventDTO.place, linkCompra=eventDTO.linkCompra)
-        eventRepository.save(event)
+
+        return eventRepository.save(event)
     }
 
-    @GetMapping
+    @GetMapping()
     fun getEvents(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "10") size: Int
