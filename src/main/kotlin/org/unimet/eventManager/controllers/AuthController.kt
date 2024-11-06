@@ -49,13 +49,14 @@ class AuthController (
     @CrossOrigin(origins = ["*"])
    @PostMapping("/signup")
     fun createUser(
-        @RequestBody userDTO: UserDTO) {
+        @RequestBody userDTO: UserDTO): ResponseEntity<User> {
 
-        if (userRepository.existByEmail(userDTO.email)) {
-            throw RuntimeException("User already exists")
-        }
+//        if (userRepository.existByEmail(userDTO.email)) {
+//            throw RuntimeException("User already exists")
+//        }
 
         val user = User(email=userDTO.email, password=passwordEncoder.encode(userDTO.password), name=userDTO.name, lastName=userDTO.lastName, role=userDTO.role)
-        userRepository.save(user)
+        val savedUser = userRepository.save(user)
+        return ResponseEntity.ok(savedUser)// probando responseEntity return
     }
 }

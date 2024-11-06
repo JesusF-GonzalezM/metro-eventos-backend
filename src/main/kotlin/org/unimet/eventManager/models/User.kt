@@ -12,5 +12,5 @@ data class User(
     var password: String,
     val name: String,
     val lastName: String,
-    val role: String? = null
+    val role: String
 )

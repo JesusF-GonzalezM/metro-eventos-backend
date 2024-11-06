@@ -25,7 +25,7 @@ class UserController(
         //TODO: Investigar si es mejor un PutMapping con el punto de borrado.
     }
 
-    @GetMapping("/{mail}")
+    @GetMapping("/{mail}") // para acceder es users/"correo del usuario"
     fun getUser(@PathVariable mail: String): User {
         return userRepository.findUserByEmail(mail)
     }
