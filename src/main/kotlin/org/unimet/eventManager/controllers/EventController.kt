@@ -4,14 +4,11 @@ import org.springframework.web.bind.annotation.*
 import org.unimet.eventManager.dto.EventDTO
 import org.unimet.eventManager.models.Event
 import org.unimet.eventManager.repositories.EventRepository
-//import org.unimet.eventManager.services.EventService
-
 
 @RestController
 @RequestMapping("/events")
 class EventController (
-    val eventRepository: EventRepository,
-    //val eventService: EventService
+    val eventRepository: EventRepository
 ) {
 
     @CrossOrigin(origins = ["*"])
@@ -29,6 +26,29 @@ class EventController (
     @GetMapping
     fun getAllEvents(): List<Event> {
         return eventRepository.findAll()
+    }
+
+     @CrossOrigin(origins = ["*"])
+    @PutMapping("/{id}")
+    fun updateEvent(
+        @PathVariable id: String,
+        @RequestBody eventDTO: EventDTO
+    ): Event {
+
+        val existingEvent = eventRepository.findById(id).orElseThrow {
+            RuntimeException("Event with id $id not found")
+        }
+
+        existingEvent.path = eventDTO.path
+        existingEvent.title = eventDTO.title
+        existingEvent.date = eventDTO.date
+        existingEvent.author = eventDTO.author
+        existingEvent.description = eventDTO.description
+        existingEvent.entryType = eventDTO.entryType
+        existingEvent.place = eventDTO.place
+        existingEvent.label = eventDTO.label
+
+        return eventRepository.save(existingEvent)
     }
 
 //    @CrossOrigin(origins = ["*"])

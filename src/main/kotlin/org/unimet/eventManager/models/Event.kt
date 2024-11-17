@@ -8,12 +8,12 @@ import org.springframework.data.mongodb.core.mapping.MongoId
 data class Event(
     @MongoId(targetType = FieldType.STRING)
     var id: String? = null,
-    val title: String,
-    val path: String,
-    val date: String,
-    val place: String,
-    val author: String,
-    val entryType: String,
-    val description: String?,
-    val label: String
+    var title: String,
+    var path: String,
+    var date: String,
+    var place: String,
+    var author: String,
+    var entryType: String,
+    var description: String?,
+    var label: List<String>
 )
