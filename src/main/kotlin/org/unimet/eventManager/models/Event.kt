@@ -14,5 +14,6 @@ data class Event(
     val place: String,
     val author: String,
     val entryType: String,
-    val description: String?
+    val description: String?,
+    val label: String
 )

@@ -1,18 +1,17 @@
 package org.unimet.eventManager.controllers
 
-import org.springframework.data.domain.Page
 import org.springframework.web.bind.annotation.*
 import org.unimet.eventManager.dto.EventDTO
 import org.unimet.eventManager.models.Event
 import org.unimet.eventManager.repositories.EventRepository
-import org.unimet.eventManager.services.EventService
+//import org.unimet.eventManager.services.EventService
 
 
 @RestController
 @RequestMapping("/events")
 class EventController (
     val eventRepository: EventRepository,
-    val eventService: EventService
+    //val eventService: EventService
 ) {
 
     @CrossOrigin(origins = ["*"])
@@ -21,7 +20,7 @@ class EventController (
         @RequestBody eventDTO: EventDTO,
     ): Event {
         val event = Event(id=eventDTO.id, path=eventDTO.path, title=eventDTO.title, date=eventDTO.date, author=eventDTO.author, description=eventDTO.description,
-            entryType=eventDTO.entryType, place=eventDTO.place)
+            entryType=eventDTO.entryType, place=eventDTO.place, label=eventDTO.label)
 
         return eventRepository.save(event)
     }

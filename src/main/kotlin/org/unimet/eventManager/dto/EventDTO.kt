@@ -9,5 +9,6 @@ data class EventDTO(
     val place: String,
     val author: String,
     val entryType: String,
-    val description: String? = null
+    val description: String? = null,
+    val label: String
 )
