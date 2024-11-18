@@ -17,7 +17,7 @@ class EventController (
         @RequestBody eventDTO: EventDTO,
     ): Event {
         val event = Event(id=eventDTO.id, path=eventDTO.path, title=eventDTO.title, date=eventDTO.date, author=eventDTO.author, description=eventDTO.description,
-            entryType=eventDTO.entryType, place=eventDTO.place, label=eventDTO.label, userID=eventDTO.userID)
+            entryType=eventDTO.entryType, place=eventDTO.place, label=eventDTO.label, userEmail=eventDTO.userEmail)
 
         return eventRepository.save(event)
     }

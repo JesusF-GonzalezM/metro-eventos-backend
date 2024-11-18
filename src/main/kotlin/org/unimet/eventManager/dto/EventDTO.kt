@@ -11,5 +11,5 @@ data class EventDTO(
     var entryType: String,
     var description: String? = null,
     var label: List<String>,
-    var userID: String
+    var userEmail: String
 )
