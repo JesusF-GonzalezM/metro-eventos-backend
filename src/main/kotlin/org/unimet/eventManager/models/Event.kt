@@ -15,5 +15,6 @@ data class Event(
     var author: String,
     var entryType: String,
     var description: String?,
-    var label: List<String>
+    var label: List<String>,
+    var userID: String
 )
