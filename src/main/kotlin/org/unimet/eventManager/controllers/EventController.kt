@@ -28,7 +28,7 @@ class EventController (
         return eventRepository.findAll()
     }
 
-     @CrossOrigin(origins = ["*"])
+    @CrossOrigin(origins = ["*"])
     @PutMapping("/{id}")
     fun updateEvent(
         @PathVariable id: String,
@@ -49,6 +49,12 @@ class EventController (
         existingEvent.label = eventDTO.label
 
         return eventRepository.save(existingEvent)
+    }
+
+    @CrossOrigin(origins = ["*"])
+    @DeleteMapping("/{id}")
+    fun deleteEvent(@PathVariable id: String) {
+        eventRepository.deleteById(id)
     }
 
 //    @CrossOrigin(origins = ["*"])
