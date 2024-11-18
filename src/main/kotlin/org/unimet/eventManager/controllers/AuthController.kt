@@ -39,7 +39,16 @@ class AuthController (
             )
             val userDetails: UserDetails = userDetailsService.loadUserByUsername(authenticationRequest.email)
             val token = jwtUtil.generateToken(userDetails)
-            val response = JwtResponse(token)
+
+            val email = userDetails.username
+            val authority = userDetails.authorities.firstOrNull()?.authority ?: "No Authority"
+
+            val response = mapOf(
+            "token" to token,
+            "email" to email,
+            "role" to authority
+            )
+            //val response = JwtResponse(token)
             ResponseEntity.ok(response)
         } catch (ex: BadCredentialsException) {
             ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect email or password")

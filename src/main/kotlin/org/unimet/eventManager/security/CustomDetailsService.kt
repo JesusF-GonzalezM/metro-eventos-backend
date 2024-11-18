@@ -1,5 +1,6 @@
 package org.unimet.eventManager.security
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -13,7 +14,7 @@ class CustomDetailsService(
 
     override fun loadUserByUsername(username: String): UserDetails {
         val user = userRepository.findUserByEmail(username)
-
-        return User(user.email, user.password, listOf())
+        val authority = SimpleGrantedAuthority(user.role)
+        return User(user.email, user.password, listOf(authority))
     }
 }
