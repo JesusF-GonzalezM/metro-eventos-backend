@@ -2,11 +2,14 @@ package org.unimet.eventManager.dto
 
 
 data class UserDTO(
-    val name: String,
-    val lastName: String,
+    var name: String,
+    var lastName: String,
     val email: String,
-    val password: String,
-    val role: String
+    var password: String,
+    val role: String,
+    var gender: String?,
+    var birthDate: String?,
+    var profilePhoto: String?
 )
 
 data class AuthenticationRequest(

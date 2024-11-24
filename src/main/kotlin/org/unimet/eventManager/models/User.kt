@@ -10,7 +10,10 @@ data class User(
     var id: String? = null,
     val email: String,
     var password: String,
-    val name: String,
-    val lastName: String,
-    val role: String
+    var name: String,
+    var lastName: String,
+    val role: String,
+    var gender: String?,
+    var birthDate: String?,
+    var profilePhoto: String?
 )
