@@ -6,7 +6,8 @@ data class UserDTO(
     val lastName: String,
     val email: String,
     val password: String,
-    val role: String
+    val role: String,
+    var bookmarks: List<String>? = null
 )
 
 data class AuthenticationRequest(

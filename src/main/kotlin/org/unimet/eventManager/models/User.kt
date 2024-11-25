@@ -12,5 +12,6 @@ data class User(
     var password: String,
     val name: String,
     val lastName: String,
-    val role: String
+    val role: String,
+    var bookmarks: List<String>? = null
 )

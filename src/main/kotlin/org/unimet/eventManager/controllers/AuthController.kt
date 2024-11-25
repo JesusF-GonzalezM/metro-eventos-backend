@@ -64,7 +64,7 @@ class AuthController (
 //            throw RuntimeException("User already exists")
 //        }
 
-        val user = User(email=userDTO.email, password=passwordEncoder.encode(userDTO.password), name=userDTO.name, lastName=userDTO.lastName, role=userDTO.role)
+        val user = User(email=userDTO.email, password=passwordEncoder.encode(userDTO.password), name=userDTO.name, lastName=userDTO.lastName, role=userDTO.role, bookmarks=userDTO.bookmarks)
         val savedUser = userRepository.save(user)
         return ResponseEntity.ok(savedUser)// probando responseEntity return
     }
