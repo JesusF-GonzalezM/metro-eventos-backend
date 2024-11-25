@@ -34,7 +34,6 @@ class EventController (
         @PathVariable id: String,
         @RequestBody eventDTO: EventDTO
     ): Event {
-
         val existingEvent = eventRepository.findById(id).orElseThrow {
             RuntimeException("Event with id $id not found")
         }

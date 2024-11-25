@@ -27,7 +27,6 @@ class JwtRequestFilter(
         chain: FilterChain
     ) {
         val authorizationHeader = request.getHeader("Authorization")
-
         if (authorizationHeader.isNullOrEmpty() || !authorizationHeader.startsWith("Bearer ")) {
             chain.doFilter(request, response)
             return

@@ -15,25 +15,24 @@ import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 
-
 @Configuration
 @EnableWebSecurity
 class SecurityConfiguration(
     private val jwtRequestFilter: JwtRequestFilter,
-    private val authenticationProvider: AuthenticationProvider,
-    private val corsConfigurationSource: CorsConfigurationSource
+    private val authenticationProvider: AuthenticationProvider
 ) {
 
+
     @Bean
-    fun securityFilterChain(http:HttpSecurity): SecurityFilterChain {
+    fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
-            .cors{ it.configurationSource(corsConfigurationSource) }  //Customizer.withDefaults()
+            .cors { it.configurationSource(corsConfigurationSource()) }
             .csrf { it.disable() }
             .authorizeHttpRequests {
                 it
                     .requestMatchers("/auth/**").permitAll()
+                    .requestMatchers("/users/profile/**").authenticated()
                     .anyRequest().authenticated()
-
             }
             .sessionManagement {
                 it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -43,12 +42,13 @@ class SecurityConfiguration(
         return http.build()
     }
 
+
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
-        configuration.allowedOrigins = listOf("http://localhost:5173") // Replace with your allowed origin
-        configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS") // Add other methods as needed
-        configuration.allowedHeaders = listOf("*") // Allow all headers
+        configuration.allowedOrigins = listOf("http://localhost:5173")
+        configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
+        configuration.allowedHeaders = listOf("*")
         configuration.allowCredentials = true
         configuration.exposedHeaders = listOf("Authorization")
 
@@ -57,9 +57,10 @@ class SecurityConfiguration(
         return source
     }
 
+
     @Bean
-    fun securityCustomizer() : WebSecurityCustomizer =
-         WebSecurityCustomizer { web: WebSecurity ->
+    fun securityCustomizer(): WebSecurityCustomizer =
+        WebSecurityCustomizer { web: WebSecurity ->
             web.ignoring()
                 .requestMatchers("/auth/**")
         }
