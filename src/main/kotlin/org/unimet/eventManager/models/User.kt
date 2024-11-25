@@ -10,8 +10,8 @@ data class User(
     var id: String? = null,
     val email: String,
     var password: String,
-    val name: String,
-    val lastName: String,
+    var name: String,
+    var lastName: String,
     val role: String,
     var bookmarks: List<String>? = null
 )

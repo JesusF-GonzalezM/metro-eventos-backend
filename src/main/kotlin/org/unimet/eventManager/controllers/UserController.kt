@@ -16,6 +16,9 @@ class UserController(
     ) {
         val user = userRepository.findUserByEmail(mail)
         user.password = userDTO.password
+        user.name = userDTO.name
+        user.lastName = userDTO.lastName
+        user.bookmarks = userDTO.bookmarks
         userRepository.save(user)
     }
 
