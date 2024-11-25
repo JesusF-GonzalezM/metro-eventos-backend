@@ -9,6 +9,7 @@ import org.unimet.eventManager.repositories.UserRepository
 class UserController(
     val userRepository: UserRepository
 ) {
+    @CrossOrigin(origins = ["*"])
     @PutMapping("/{mail}")
     fun updateUser(
         @PathVariable mail: String,
@@ -22,12 +23,14 @@ class UserController(
         userRepository.save(user)
     }
 
+    @CrossOrigin(origins = ["*"])
     @DeleteMapping("/{mail}")
     fun deleteUser(@PathVariable mail: String) {
         userRepository.deleteByEmail(mail)
         //TODO: Investigar si es mejor un PutMapping con el punto de borrado.
     }
 
+    @CrossOrigin(origins = ["*"])
     @GetMapping("/{mail}") // para acceder es users/"correo del usuario"
     fun getUser(@PathVariable mail: String): User {
         return userRepository.findUserByEmail(mail)
