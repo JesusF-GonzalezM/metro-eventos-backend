@@ -1,5 +1,7 @@
 package org.unimet.eventManager.controllers
 
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.unimet.eventManager.dto.EventDTO
 import org.unimet.eventManager.models.Event
@@ -33,27 +35,39 @@ class EventController (
     fun updateEvent(
         @PathVariable id: String,
         @RequestBody eventDTO: EventDTO
-    ): Event {
-        val existingEvent = eventRepository.findById(id).orElseThrow {
-            RuntimeException("Event with id $id not found")
+    ): ResponseEntity<Any> {
+        return try {
+            val existingEvent = eventRepository.findById(id).orElseThrow {
+                RuntimeException("Event with id $id not found")
+            }
+
+            existingEvent.apply {
+                path = eventDTO.path
+                title = eventDTO.title
+                date = eventDTO.date
+                author = eventDTO.author
+                description = eventDTO.description
+                entryType = eventDTO.entryType
+                place = eventDTO.place
+                label = eventDTO.label
+            }
+
+            eventRepository.save(existingEvent)
+            ResponseEntity.ok(mapOf("message" to "Event updated successfully", "event" to existingEvent))
+        } catch (e: RuntimeException) {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(mapOf("error" to e.message))
         }
-
-        existingEvent.path = eventDTO.path
-        existingEvent.title = eventDTO.title
-        existingEvent.date = eventDTO.date
-        existingEvent.author = eventDTO.author
-        existingEvent.description = eventDTO.description
-        existingEvent.entryType = eventDTO.entryType
-        existingEvent.place = eventDTO.place
-        existingEvent.label = eventDTO.label
-
-        return eventRepository.save(existingEvent)
     }
 
     @CrossOrigin(origins = ["*"])
     @DeleteMapping("/{id}")
-    fun deleteEvent(@PathVariable id: String) {
-        eventRepository.deleteById(id)
+    fun deleteEvent(@PathVariable id: String): ResponseEntity<Any> {
+        return if (eventRepository.existsById(id)) {
+            eventRepository.deleteById(id)
+            ResponseEntity.ok(mapOf("message" to "Event deleted successfully"))
+        } else {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(mapOf("error" to "Event with id $id not found"))
+        }
     }
 
 //    @CrossOrigin(origins = ["*"])
