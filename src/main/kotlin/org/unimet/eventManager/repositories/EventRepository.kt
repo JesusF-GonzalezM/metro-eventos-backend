@@ -10,7 +10,9 @@ import org.unimet.eventManager.models.Event
 interface EventRepository : MongoRepository<Event, String> {
 
     @Query("{id: '?0'}")
-    fun findEventById(eventId: String): Event
+    fun findEventById(eventId: String): Event?
 
     fun findAllByOrderByDateAsc(pageable: PageRequest): Page<Event>
+
+    fun findAllById(ids: MutableList<String>): List<Event>
 }

@@ -9,7 +9,8 @@ data class UserDTO(
     val role: String,
     var gender: String?,
     var birthDate: String?,
-    var profilePhoto: String?
+    var profilePhoto: String?,
+    var subscribedEvents: MutableList<String> = mutableListOf()
 )
 
 data class AuthenticationRequest(
