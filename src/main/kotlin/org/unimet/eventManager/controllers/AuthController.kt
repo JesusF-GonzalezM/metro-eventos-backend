@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.*
 import org.unimet.eventManager.dto.AuthenticationRequest
-import org.unimet.eventManager.dto.JwtResponse
 import org.unimet.eventManager.dto.UserDTO
 import org.unimet.eventManager.models.User
 import org.unimet.eventManager.repositories.UserRepository
@@ -48,7 +47,6 @@ class AuthController (
             "email" to email,
             "role" to authority
             )
-            //val response = JwtResponse(token)
             ResponseEntity.ok(response)
         } catch (ex: BadCredentialsException) {
             ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect email or password")
@@ -58,11 +56,11 @@ class AuthController (
     @CrossOrigin(origins = ["*"])
    @PostMapping("/signup")
     fun createUser(
-        @RequestBody userDTO: UserDTO): ResponseEntity<User> {
+        @RequestBody userDTO: UserDTO): ResponseEntity<Any> {
 
-//        if (userRepository.existByEmail(userDTO.email)) {
-//            throw RuntimeException("User already exists")
-//        }
+        if (userRepository.existByEmail(userDTO.email)) {
+            return  ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists with that email")
+        }
 
         val user = User(email=userDTO.email, password=passwordEncoder.encode(userDTO.password), name=userDTO.name, lastName=userDTO.lastName, role=userDTO.role, bookmarks=userDTO.bookmarks)
         val savedUser = userRepository.save(user)
